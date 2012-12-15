@@ -9,13 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface ViewController : UIViewController <NSStreamDelegate> {
-    BOOL _goForward;
-    BOOL _goReverse;
-    BOOL _turnLeft;
-    BOOL _turnRight;
-    
     BOOL _connectInProgress;
-    
     
     NSOutputStream *_outputStream;
 }

@@ -45,8 +45,6 @@
 #pragma mark - Actions
 
 - (IBAction)goForward:(id)sender {
-    _goForward = YES;
-    
     NSString *response  = @"forward";
 	NSData *data = [[NSData alloc] initWithData:[response dataUsingEncoding:NSASCIIStringEncoding]];
 	[_outputStream write:[data bytes] maxLength:[data length]];
@@ -54,8 +52,6 @@
 
 
 - (IBAction)goReverse:(id)sender {
-    _goReverse = YES;
-
     NSString *response  = @"reverse";
 	NSData *data = [[NSData alloc] initWithData:[response dataUsingEncoding:NSASCIIStringEncoding]];
 	[_outputStream write:[data bytes] maxLength:[data length]];
@@ -63,8 +59,6 @@
 
 
 - (IBAction)turnLeft:(id)sender {
-    _goForward = YES;
-
     NSString *response  = @"left";
 	NSData *data = [[NSData alloc] initWithData:[response dataUsingEncoding:NSASCIIStringEncoding]];
 	[_outputStream write:[data bytes] maxLength:[data length]];
@@ -72,8 +66,6 @@
 
 
 - (IBAction)turnRight:(id)sender {
-    _goForward = YES;
-
     NSString *response  = @"right";
 	NSData *data = [[NSData alloc] initWithData:[response dataUsingEncoding:NSASCIIStringEncoding]];
 	[_outputStream write:[data bytes] maxLength:[data length]];
@@ -81,11 +73,6 @@
 
 
 - (IBAction)stop:(id)sender {
-    _goForward = NO;
-    _goReverse = NO;
-    _turnLeft = NO;
-    _turnRight = NO;
-    
     NSString *response  = @"stop";
 	NSData *data = [[NSData alloc] initWithData:[response dataUsingEncoding:NSASCIIStringEncoding]];
 	[_outputStream write:[data bytes] maxLength:[data length]];
