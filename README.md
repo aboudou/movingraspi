@@ -1,3 +1,10 @@
+Warning
+=======
+
+MovingRaspi is a work in progress and will greatly evolve as the project will progress
+
+
+
 MovingRaspi
 ===========
 
