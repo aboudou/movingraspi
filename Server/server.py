@@ -60,21 +60,22 @@ class MovingRaspi(Protocol):
 # Init GPIO pins    
 def initPins():
     mcp.config(0, mcp.OUTPUT) #1, right wheel forward
-    mcp.config(1, mcp.OUTPUT) #2, right wheel forward
-    mcp.config(2, mcp.OUTPUT) #3, right wheel reverse
-    mcp.config(3, mcp.OUTPUT) #4, right wheel reverse
-    mcp.config(4, mcp.OUTPUT) #5, left wheel forward
-    mcp.config(5, mcp.OUTPUT) #6, left wheel forward
-    mcp.config(6, mcp.OUTPUT) #7, left wheel reverse 
-    mcp.config(7, mcp.OUTPUT) #8, left wheel reverse
     mcp.output(0, 0)
+    mcp.config(1, mcp.OUTPUT) #2, right wheel forward
     mcp.output(1, 0)
+    mcp.config(2, mcp.OUTPUT) #3, right wheel reverse
     mcp.output(2, 0)
+    mcp.config(3, mcp.OUTPUT) #4, right wheel reverse
     mcp.output(3, 0)
+    mcp.config(4, mcp.OUTPUT) #5, left wheel forward
     mcp.output(4, 0)
+    mcp.config(5, mcp.OUTPUT) #6, left wheel forward
     mcp.output(5, 0)
+    mcp.config(6, mcp.OUTPUT) #7, left wheel reverse 
     mcp.output(6, 0)
+    mcp.config(7, mcp.OUTPUT) #8, left wheel reverse
     mcp.output(7, 0)
+
 
 # Called on process interruption. Set all pins to "Input" default mode.
 def endProcess(signalnum = None, handler = None):
@@ -86,14 +87,7 @@ def endProcess(signalnum = None, handler = None):
     mcp.output(5, 0)
     mcp.output(6, 0)
     mcp.output(7, 0)
-    #mcp.pullup(0, 1)
-    #mcp.pullup(1, 1)
-    #mcp.pullup(2, 1)
-    #mcp.pullup(3, 1)
-    #mcp.pullup(4, 1)
-    #mcp.pullup(5, 1)
-    #mcp.pullup(6, 1)
-    #mcp.pullup(7, 1)
+    
     reactor.stop()
 
 ### Main section
