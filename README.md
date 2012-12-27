@@ -46,28 +46,17 @@ Go into “Server” folder, then execute the following commands (you may need t
 `curl -O https://raw.github.com/adafruit/Adafruit-Raspberry-Pi-Python-Code/master/Adafruit_I2C/Adafruit_I2C.py`
 `curl -O https://raw.github.com/adafruit/Adafruit-Raspberry-Pi-Python-Code/master/Adafruit_MCP230xx/Adafruit_MCP230xx.py`
 
-Depending on the date you get Adafruit\_MCP230xx.py, you may have to fix register addresses if you use an MCP23008 chip (should be OK with MCP23017 chip). You have to edit the file, and replace the code
+Depending on the date you got Adafruit\_MCP230xx.py, you may have a version which works with MCP23017 chip, but not with MCP23008 chip.
 
-    MCP23017_IODIRA = 0x00
-    MCP23017_IODIRB = 0x01
-    MCP23017_GPIOA = 0x12
-    MCP23017_GPIOB = 0x13
-    MCP23017_GPPUA = 0x0C
-    MCP23017_GPPUB = 0x0D
-    MCP23017_OLATA = 0x14
-    MCP23017_OLATB = 0x15
-  
-with 
+* If you have downloaded the file starting December 28, 2012, it will be OK.i
+* If you have downloaded the file before December 27, 2012, you'll have to download it again.
+* If you have downloaded the file on December 27, 2012, check at the beginning of the file for the following lines of code :
 
-    MCP23017_IODIRA = 0x00
-    MCP23017_IODIRB = 0x01
-    MCP23017_GPIOA = 0x09
-    MCP23017_GPIOB = 0x13
-    MCP23017_GPPUA = 0x06
-    MCP23017_GPPUB = 0x0D
-    MCP23017_OLATA = 0x0A
-    MCP23017_OLATB = 0x15
+    MCP23008_GPIOA  = 0x09
+    MCP23008_GPPUA  = 0x06
+    MCP23008_OLATA  = 0x0A
 
+If they are present, you have the correct version of the file. If not, you have to download it again.
 
 How to use MovingRaspi (server)
 -------------------------------
