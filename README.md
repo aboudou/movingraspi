@@ -52,9 +52,11 @@ Depending on the date you got Adafruit\_MCP230xx.py, you may have a version whic
 * If you have downloaded the file before December 27, 2012, you'll have to download it again.
 * If you have downloaded the file on December 27, 2012, check at the beginning of the file for the following lines of code :
 
-    MCP23008_GPIOA  = 0x09
-    MCP23008_GPPUA  = 0x06
-    MCP23008_OLATA  = 0x0A
+```
+MCP23008_GPIOA  = 0x09
+MCP23008_GPPUA  = 0x06
+MCP23008_OLATA  = 0x0A
+```
 
 If they are present, you have the correct version of the file. If not, you have to download it again.
 
