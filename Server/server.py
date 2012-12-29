@@ -77,7 +77,7 @@ def initPins():
     mcp.output(7, 0)
 
 
-# Called on process interruption. Set all pins to "Input" default mode.
+# Called on process interruption. Set all pins to "low level" output.
 def endProcess(signalnum = None, handler = None):
     mcp.output(0, 0)
     mcp.output(1, 0)
