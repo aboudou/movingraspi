@@ -64,7 +64,7 @@ If they are present, you have the correct version of the file. If not, you have 
 How to use MovingRaspi (server)
 -------------------------------
 
-You'll first have to build the assembly, and plug it to the Raspberry Pi. For now, (check [https://goddess-gate.com/dc2/index.php/pages/raspiledmeter.en](https://goddess-gate.com/dc2/index.php/pages/raspiledmeter.en) for information) for a test assembly working with the current code.
+You'll first have to build the assembly, and plug it to the Raspberry Pi. For now, check “Documentation/MovingRaspi concept.fzz” for a test assembly working with the current code.
 
 Then update “config.py” file to fit your needs.
 
