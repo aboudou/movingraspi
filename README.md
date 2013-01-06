@@ -64,7 +64,7 @@ If they are present, you have the correct version of the file. If not, you have 
 How to use MovingRaspi (server)
 -------------------------------
 
-You'll first have to build the assembly, and plug it to the Raspberry Pi. For now, check “Documentation/MovingRaspi concept.fzz” for a test assembly working with the current code (“Documentation/MovingRaspi.fzz” should be OK, but I still can't guarantee it as I didn't received yet all parts for the assembly).
+You'll first have to build the assembly, and plug it to the Raspberry Pi. For now, check “Documentation/MovingRaspi concept.fzz” for a test assembly working with the current code (“Documentation/MovingRaspi.fzz” should be OK, but I can't guarantee it as I didn't yet received all parts for the assembly).
 
 Then update “config.py” file to fit your needs.
 
