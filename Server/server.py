@@ -10,6 +10,10 @@ import signal
 # Protocol for managing MovingRaspiRemote commands
 class MovingRaspi(Protocol):
   def connectionMade(self):
+    # Reinit MCP access, sometimes we lost it and can't access it anymore
+    mcp = None
+    mcp = Adafruit_MCP230XX(address = 0x20, num_gpios = 8)
+    initPins()    
     print("A client connected")
 
   def dataReceived(self, data):
