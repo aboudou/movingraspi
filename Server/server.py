@@ -18,6 +18,8 @@ class MovingRaspi(Protocol):
 
   def dataReceived(self, data):
     if data == "forward":
+      # All wheels stop
+      stop()
       # Right wheel forward
       mcp.output(0, 1)
       mcp.output(1, 1)
@@ -26,6 +28,8 @@ class MovingRaspi(Protocol):
       mcp.output(5, 1)
 
     elif data == "reverse":
+      # All wheels stop
+      stop()
       # Right wheel reverse
       mcp.output(2, 1)
       mcp.output(3, 1)
@@ -34,6 +38,8 @@ class MovingRaspi(Protocol):
       mcp.output(7, 1)
 
     elif data == "left":
+      # All wheels stop
+      stop()
       # Right wheel forward
       mcp.output(0, 1)
       mcp.output(1, 1)
@@ -42,6 +48,8 @@ class MovingRaspi(Protocol):
       mcp.output(7, 1)
 
     elif data == "right":
+      # All wheels stop
+      stop()
       # Right wheel reverse
       mcp.output(2, 1)
       mcp.output(3, 1)
@@ -51,15 +59,7 @@ class MovingRaspi(Protocol):
 
     else:
       # All wheels stop
-      mcp.output(0, 0)
-      mcp.output(1, 0)
-      mcp.output(2, 0)
-      mcp.output(3, 0)
-      mcp.output(4, 0)
-      mcp.output(5, 0)
-      mcp.output(6, 0)
-      mcp.output(7, 0)
-
+      stop()
 
 # Init GPIO pins    
 def initPins():
@@ -80,6 +80,16 @@ def initPins():
     mcp.config(7, mcp.OUTPUT) #8, left wheel reverse
     mcp.output(7, 0)
 
+# Set all pins to low
+def stop():
+    mcp.output(0, 0)
+    mcp.output(1, 0)
+    mcp.output(2, 0)
+    mcp.output(3, 0)
+    mcp.output(4, 0)
+    mcp.output(5, 0)
+    mcp.output(6, 0)
+    mcp.output(7, 0)
 
 # Called on process interruption. Set all pins to "low level" output.
 def endProcess(signalnum = None, handler = None):
