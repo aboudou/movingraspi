@@ -34,7 +34,9 @@ To help you with the assembly, you may refer to the following files :
 * You may need to download and install [Raspberry Part](https://github.com/adafruit/Fritzing-Library/blob/master/AdaFruit.fzbz) for Fritzing
 * MovingRaspi concept.fzz : the concept assembly mockup (fire LED instead of transistors to illustrate MCP23008 use) to open with Fritzing
   ([http://fritzing.org/](http://fritzing.org/))
-* MovingRaspi.fzz : the main assembly mockup to open with Fritzing
+* MovingRaspi.fzz (EBC transistor) : the main assembly mockup (with EBC transistors) to open with Fritzing
+  ([http://fritzing.org/](http://fritzing.org/))
+* MovingRaspi.fzz (ECB transistor) : the main assembly mockup (with ECB transistors) to open with Fritzing
   ([http://fritzing.org/](http://fritzing.org/))
 * Power.fzz : the example assembly for common power supply mockup to open with Fritzing
   ([http://fritzing.org/](http://fritzing.org/))
