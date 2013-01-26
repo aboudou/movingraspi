@@ -11,8 +11,10 @@ MovingRaspi
 MovingRaspi is a project about motorizing a Raspberry Pi and controlling it with an iPhone.
 
 * [Youtube video of iPhone controls concept](http://www.youtube.com/watch?v=zaB3agbCoIY)
+* [Youtube video of the final assembly](http://www.youtube.com/watch?v=nw-39-aKUKc)
 * [MovingRaspi - Part 1 : First steps](https://goddess-gate.com/dc2/index.php/post/506)
 * [MovingRaspi - Part 2 : iPhone / Raspberry Pi communication](https://goddess-gate.com/dc2/index.php/post/508)
+* [MovingRaspi - Part 3 : The final assembly](https://goddess-gate.com/dc2/index.php/post/510)
 
 Requirements
 ------------
