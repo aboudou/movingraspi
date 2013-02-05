@@ -16,6 +16,11 @@ MovingRaspi is a project about motorizing a Raspberry Pi and controlling it with
 * [MovingRaspi - Part 2 : iPhone / Raspberry Pi communication](https://goddess-gate.com/dc2/index.php/post/508)
 * [MovingRaspi - Part 3 : The final assembly](https://goddess-gate.com/dc2/index.php/post/510)
 
+Notes
+-----
+* MovingRaspiRemote is the base application to control the robot. I will not evolve (except fixes for new versions of XCode / iOS), and is here to illustrate above steps.
+* MovingRaspiRemotePlus is the alive application. It will evolve through time, to test new concepts.
+
 Requirements
 ------------
 
@@ -76,7 +81,7 @@ When you're done, just launch MovingRaspi with `./Server/movingraspi.sh start` a
   root user. When you want / need to stop it, just execute `./Server/movingraspi.sh  stop` as root user.
 
 
-How to use MovingRaspiRemote (iPhone)
+How to use MovingRaspiRemote(Plus) (iPhone)
 -------------------------------------
 
 Just open XCode project then build and install MovingRaspiRemote on your iDevice. If ypu don't have an Apple iOS Developper account, you may use MovingRaspiRemote within iOS Simulator.
