@@ -1,5 +1,7 @@
 *.pyc
 .DS_Store
+Adafruit_I2C.py
+Adafruit_MCP230xx.py
 
 # Xcode
 build/*
