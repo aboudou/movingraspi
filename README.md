@@ -16,4 +16,4 @@ Differences between MovingRaspi and MovingRaspiPlus
 * “MovingRaspiPlus” is the alive version of MovingRaspi. It will evolve through time, to test new concepts. Changes from MovingRaspi are :
 	* Possibility to control MovingRaspi with iPhone accelerometer
 	* Use of L293D motor driver instead of “manual” H-Bridge.
-
+    * Support for [PiCheckVoltage](https://github.com/aboudou/picheckvoltage)

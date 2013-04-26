@@ -14,9 +14,10 @@
 
 @implementation ViewController
 
-@synthesize port, host, connect, disconnect, status;
+@synthesize port, pcvPort, host, connect, disconnect, status;
 @synthesize btnForward, btnReverse, btnLeft, btnRight;
 @synthesize controlType;
+@synthesize batteryLevel;
 
 #pragma mark - View controller lifecycle
 
@@ -33,6 +34,9 @@
     }
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"com.aboudou.movingraspiremote.port"] != nil) {
         [port setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"com.aboudou.movingraspiremote.port"]];
+    }
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"com.aboudou.movingraspiremote.pcvPort"] != nil) {
+        [pcvPort setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"com.aboudou.movingraspiremote.pcvPort"]];
     }
 
     // Gyroscopic control part. Will enable it if the device supports it :
@@ -88,10 +92,12 @@
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:[host text] forKey:@"com.aboudou.movingraspiremote.host"];
     [defaults setObject:[port text] forKey:@"com.aboudou.movingraspiremote.port"];
+    [defaults setObject:[pcvPort text] forKey:@"com.aboudou.movingraspiremote.pcvPort"];
     [defaults synchronize];
     
     [[self host] resignFirstResponder];
     [[self port] resignFirstResponder];
+    [[self pcvPort] resignFirstResponder];
     
     [self doDisconnect:nil];
     [self initNetworkCommunication];
@@ -99,6 +105,11 @@
     
     [status setText:@"Connection in progress…"];
     [self performSelectorInBackground:@selector(waitForConnection:) withObject:nil];
+    
+    if ([[[self pcvPort] text] length] > 0) {
+        [self performSelectorInBackground:@selector(piCheckVoltageStatus:) withObject:nil];
+    }
+
 }
 
 
@@ -107,8 +118,11 @@
     [[self port] resignFirstResponder];
 
     [_outputStream close];
+    [_inputStream close];
     
     _connectInProgress = NO;
+    
+    [batteryLevel setProgress:0.0 animated:YES];
     
     [status setText:@"Not connected"];
 }
@@ -169,22 +183,82 @@
 #pragma mark - Misc
 
 - (void) sendCommand:(NSString *)command {
-    NSLog(@"%@", command);
-        NSData *data = [[NSData alloc] initWithData:[command dataUsingEncoding:NSASCIIStringEncoding]];
-        [_outputStream write:[data bytes] maxLength:[data length]];
+    NSData *data = [[NSData alloc] initWithData:[command dataUsingEncoding:NSASCIIStringEncoding]];
+    [_outputStream write:[data bytes] maxLength:[data length]];
 }
 
 
 - (void) waitForConnection:(id) sender {
     @autoreleasepool {
-        while ([_outputStream streamStatus] != NSStreamStatusOpen && _connectInProgress) {
+        // Connect to MovingRaspi server
+        
+        while (([_outputStream streamStatus] != NSStreamStatusOpen && [_outputStream streamStatus] != NSStreamStatusError) && _connectInProgress) {
             [status performSelectorOnMainThread:@selector(setText:) withObject:@"Connection in progress…" waitUntilDone:YES];
         }
-        if (_connectInProgress) {
+        if ([_outputStream streamStatus] == NSStreamStatusOpen) {
             [status performSelectorOnMainThread:@selector(setText:) withObject:[NSString stringWithFormat:@"Connected to %@:%@", [self.host text], [self.port text]] waitUntilDone:YES];
+        } else if ([_outputStream streamStatus] == NSStreamStatusError) {
+            [status performSelectorOnMainThread:@selector(setText:) withObject:@"Could not connect to MovingRaspi" waitUntilDone:YES];
         } else {
-            [status performSelectorOnMainThread:@selector(setText:) withObject:@"Not connected" waitUntilDone:YES];
+            [status performSelectorOnMainThread:@selector(setText:) withObject:@"Not connected to MovingRaspi" waitUntilDone:YES];
         }
+    }
+}
+
+
+- (void) piCheckVoltageStatus:(id) sender {
+    @autoreleasepool {
+        while (_connectInProgress) {
+            // Connect to PiCheckVoltage server
+            
+            CFReadStreamRef readStream;
+            CFWriteStreamRef writeStream;
+            CFStreamCreatePairWithSocketToHost(NULL, (CFStringRef)CFBridgingRetain([self.host text]), [[self.pcvPort text] intValue], &readStream, &writeStream);
+            _inputStream = (NSInputStream *)CFBridgingRelease(readStream);
+        
+            [_inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+            [_inputStream open];
+        
+            uint8_t buffer[1024];
+            int len;
+        
+            len = [_inputStream read:buffer maxLength:sizeof(buffer)];
+            if (len > 0) {
+                
+                NSString *output = [[NSString alloc] initWithBytes:buffer length:len encoding:NSASCIIStringEncoding];
+                
+                if (nil != output) {
+                    [self performSelectorOnMainThread:@selector(updateBatteryLevel:) withObject:output waitUntilDone:NO];
+                }
+            }
+        
+            [_inputStream close];
+            
+            NSDate *endDate = [NSDate dateWithTimeIntervalSinceNow:5];
+        
+            while ([[[NSDate alloc] init] compare:endDate] == NSOrderedAscending) {
+                // do nothing
+            }
+
+        }
+    }
+}
+
+- (void) updateBatteryLevel:(NSString *) pcvReturn {
+    @autoreleasepool {
+        NSArray *values = [pcvReturn componentsSeparatedByString: @"|"];
+
+        float progress = (([[values objectAtIndex:2] floatValue]-[[values objectAtIndex:0] floatValue])-([[values objectAtIndex:2] floatValue]-[[values objectAtIndex:1] floatValue]))/([[values objectAtIndex:2] floatValue]-[[values objectAtIndex:0] floatValue]);
+        
+        if (progress < 0.1) {
+            [batteryLevel setProgressTintColor:[UIColor redColor]];
+        } else if (progress < 0.25) {
+            [batteryLevel setProgressTintColor:[UIColor orangeColor]];
+        } else {
+            [batteryLevel setProgressTintColor:[UIColor greenColor]];
+        }
+        
+        [batteryLevel setProgress:progress animated:YES];
     }
 }
 
@@ -194,8 +268,6 @@
     CFWriteStreamRef writeStream;
     CFStreamCreatePairWithSocketToHost(NULL, (CFStringRef)CFBridgingRetain([self.host text]), [[self.port text] intValue], &readStream, &writeStream);
     _outputStream = (NSOutputStream *)CFBridgingRelease(writeStream);
-    
-    [_outputStream setDelegate:self];
     
     [_outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
     

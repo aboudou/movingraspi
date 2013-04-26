@@ -1,14 +1,9 @@
-Warning
-=======
+MovingRaspiPlus
+===============
 
-MovingRaspi is a work in progress and will greatly evolve as the project goes on.
+MovingRaspiPlus is a project about motorizing a Raspberry Pi and controlling it with an iPhone.
 
-
-
-MovingRaspi
-===========
-
-MovingRaspi is a project about motorizing a Raspberry Pi and controlling it with an iPhone.
+The following links refer to “MovingRaspi”, the first version of the project, and the base for MovingRaspiPlus.
 
 * [Youtube video of iPhone controls concept](http://www.youtube.com/watch?v=zaB3agbCoIY)
 * [Youtube video of the final assembly](http://www.youtube.com/watch?v=nw-39-aKUKc)
@@ -28,6 +23,7 @@ Requirements
 	* Twisted library. On Raspbian, install package “python-twisted”.
 	* Adafruit MCP230xx library (See below).
 	* Adafruit I2C library (See below).
+    * (Optional) [PiCheckVoltage](https://github.com/aboudou/picheckvoltage)
 * For iPhone part :
 	* An iPhone (or iPad, or iPod Touch)
 	* XCode 4.5.2
@@ -62,8 +58,8 @@ MCP23008_OLATA  = 0x0A
 
 If they are present, you have the correct version of the file. If not, you have to download it again.
 
-How to use MovingRaspi (server)
--------------------------------
+How to use MovingRaspiPlus (server)
+-----------------------------------
 
 You'll first have to build the assembly, and plug it to the Raspberry Pi.
 

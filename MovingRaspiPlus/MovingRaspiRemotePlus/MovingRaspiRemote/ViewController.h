@@ -9,10 +9,11 @@
 #import <UIKit/UIKit.h>
 #import <CoreMotion/CoreMotion.h>
 
-@interface ViewController : UIViewController <NSStreamDelegate> {
+@interface ViewController : UIViewController {
     BOOL _connectInProgress;
     
     NSOutputStream *_outputStream;
+    NSInputStream *_inputStream;
     
     CMMotionManager *_motionManager;
     CMGyroData *_gyroData;
@@ -23,6 +24,7 @@
 
 @property(nonatomic, strong) IBOutlet UITextField *host;
 @property(nonatomic, strong) IBOutlet UITextField *port;
+@property(nonatomic, strong) IBOutlet UITextField *pcvPort;
 @property(nonatomic, strong) IBOutlet UIButton *connect;
 @property(nonatomic, strong) IBOutlet UIButton *disconnect;
 @property(nonatomic, strong) IBOutlet UILabel *status;
@@ -34,6 +36,8 @@
 @property(nonatomic, strong) IBOutlet UIButton *btnStop;
 
 @property(nonatomic, strong) IBOutlet UISwitch *controlType;
+
+@property(nonatomic, strong) IBOutlet UIProgressView *batteryLevel;
 
 - (IBAction)doConnect:(id)sender;
 - (IBAction)doDisconnect:(id)sender;

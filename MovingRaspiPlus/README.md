@@ -23,6 +23,7 @@ Requirements
 	* Twisted library. On Raspbian, install package “python-twisted”.
 	* Adafruit MCP230xx library (See below).
 	* Adafruit I2C library (See below).
+    * (Optional) [PiCheckVoltage](https://github.com/aboudou/picheckvoltage)
 * For iPhone part :
 	* An iPhone (or iPad, or iPod Touch)
 	* XCode 4.5.2
