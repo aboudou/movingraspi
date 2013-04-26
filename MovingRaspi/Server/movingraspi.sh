@@ -14,9 +14,12 @@ case "$1" in
     ;;
   stop)
     # Stop MovingRaspi
-    `which kill` -HUP `cat /var/run/movingraspi.pid`
-    `which rm` /var/run/movingraspi.pid
-    
+    if [ -f /var/run/movingraspi.pid ]
+    then
+      `which kill` -HUP `cat /var/run/movingraspi.pid`
+      `which rm` /var/run/movingraspi.pid
+    fi
+
     ;;
 
   *)
