@@ -234,11 +234,7 @@
         
             [_inputStream close];
             
-            NSDate *endDate = [NSDate dateWithTimeIntervalSinceNow:5];
-        
-            while ([[[NSDate alloc] init] compare:endDate] == NSOrderedAscending) {
-                // do nothing
-            }
+            [NSThread sleepForTimeInterval:30];
 
         }
     }
