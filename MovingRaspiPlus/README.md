@@ -8,16 +8,16 @@ The following links refer to “MovingRaspi”, the first version of the project
 * [Youtube video of iPhone controls concept](http://www.youtube.com/watch?v=zaB3agbCoIY)
 * [Youtube video of the final assembly](http://www.youtube.com/watch?v=nw-39-aKUKc)
 * [MovingRaspi - Project's summary](https://goddess-gate.com/projects/en/raspi/movingraspi)
-* [MovingRaspi - Part 1 : First steps](https://goddess-gate.com/dc2/index.php/post/506)
-* [MovingRaspi - Part 2 : iPhone / Raspberry Pi communication](https://goddess-gate.com/dc2/index.php/post/508)
-* [MovingRaspi - Part 3 : The final assembly](https://goddess-gate.com/dc2/index.php/post/510)
+* [MovingRaspi - Part 1: First steps](https://goddess-gate.com/projects/en/raspi/movingraspip01)
+* [MovingRaspi - Part 2: iPhone -> Raspberry Pi communication](https://goddess-gate.com/projects/en/raspi/movingraspip02)
+* [MovingRaspi - Part 3: The final assembly](https://goddess-gate.com/projects/en/raspi/movingraspip03)
 
 
 Requirements
 ------------
 
 * First of all : a Raspberry Pi.
-* Some items described [here](https://goddess-gate.com/dc2/index.php/post/506).
+* Some items described [here](https://goddess-gate.com/projects/en/raspi/movingraspip01).
 * For server part :
 	* Python (with Debian / Raspbian : packages “python” and “python-dev”).
 	* SMBus library . On Raspbian, install package “python-smbus”.
