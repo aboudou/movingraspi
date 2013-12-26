@@ -7,17 +7,13 @@
 //
 
 #import "ViewController.h"
+#import "SettingsViewController.h"
 
 @interface ViewController ()
 
 @end
 
 @implementation ViewController
-
-@synthesize port, pcvPort, host, connect, disconnect, status;
-@synthesize btnForward, btnReverse, btnLeft, btnRight;
-@synthesize controlType;
-@synthesize batteryLevel;
 
 #pragma mark - View controller lifecycle
 
@@ -26,32 +22,39 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
-    [status setText:@"Not connected"];
+    [self.status setText:@"Not connected"];
     
-    // Load user defaults
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"com.aboudou.movingraspiremote.host"] != nil) {
-        [host setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"com.aboudou.movingraspiremote.host"]];
-    }
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"com.aboudou.movingraspiremote.port"] != nil) {
-        [port setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"com.aboudou.movingraspiremote.port"]];
-    }
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"com.aboudou.movingraspiremote.pcvPort"] != nil) {
-        [pcvPort setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"com.aboudou.movingraspiremote.pcvPort"]];
-    }
-
     // Gyroscopic control part. Will enable it if the device supports it :
     // iPhone 4 and newer, iPad 2 and newer, iPod touch 4G (iPhone 4 form factor) and newer.
     _motionManager = [[CMMotionManager alloc] init];
     _gyroData = [[CMGyroData alloc] init];
     
-    [controlType setOn:FALSE];
-    
-    if (_motionManager.gyroAvailable == NO) {
-        [controlType setEnabled:NO];
-    }
-    
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    // Load user defaults
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"com.aboudou.movingraspiremote.host"] != nil) {
+        _currentHost = [[NSUserDefaults standardUserDefaults] objectForKey:@"com.aboudou.movingraspiremote.host"];
+    }
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"com.aboudou.movingraspiremote.port"] != nil) {
+        _currentPort = [[NSUserDefaults standardUserDefaults] objectForKey:@"com.aboudou.movingraspiremote.port"];
+    }
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"com.aboudou.movingraspiremote.pcvPort"] != nil) {
+        _currentPcvPort = [[NSUserDefaults standardUserDefaults] objectForKey:@"com.aboudou.movingraspiremote.pcvPort"];
+    }
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"com.aboudou.movingraspiremote.mjpegUrl"] != nil) {
+        _currentMjpegUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"com.aboudou.movingraspiremote.mjpegUrl"];
+    }
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"com.aboudou.movingraspiremote.controlType"] != nil) {
+        _currentCtrlType = [[NSUserDefaults standardUserDefaults] objectForKey:@"com.aboudou.movingraspiremote.controlType"];
+    } else {
+        _currentCtrlType = @"manual";
+    }
+    [self controlTypeChanged:nil];
+
+}
 
 - (void)didReceiveMemoryWarning
 {
@@ -88,56 +91,47 @@
 
 
 - (IBAction)doConnect:(id)sender {
-    // Save user defaults
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:[host text] forKey:@"com.aboudou.movingraspiremote.host"];
-    [defaults setObject:[port text] forKey:@"com.aboudou.movingraspiremote.port"];
-    [defaults setObject:[pcvPort text] forKey:@"com.aboudou.movingraspiremote.pcvPort"];
-    [defaults synchronize];
-    
-    [[self host] resignFirstResponder];
-    [[self port] resignFirstResponder];
-    [[self pcvPort] resignFirstResponder];
-    
     [self doDisconnect:nil];
     [self initNetworkCommunication];
     _connectInProgress = YES;
     
-    [status setText:@"Connection in progress…"];
+    [self.status setText:@"Connection in progress…"];
     [self performSelectorInBackground:@selector(waitForConnection:) withObject:nil];
     
-    if ([[[self pcvPort] text] length] > 0) {
+    if ([_currentPcvPort length] > 0) {
         [self performSelectorInBackground:@selector(piCheckVoltageStatus:) withObject:nil];
     }
 
+    if ([_currentMjpegUrl length] > 0) {
+        [self performSelector:@selector(startVideoStream) withObject:nil];
+    }
 }
 
 
 - (IBAction)doDisconnect:(id)sender {
-    [[self host] resignFirstResponder];
-    [[self port] resignFirstResponder];
-
     [_outputStream close];
     [_inputStream close];
     
     _connectInProgress = NO;
     
-    [batteryLevel setProgress:0.0 animated:YES];
+    [self.batteryLevel setProgress:0.0 animated:YES];
     
-    [status setText:@"Not connected"];
+    [self.streamView stop];
+    
+    [self.status setText:@"Not connected"];
 }
 
 - (IBAction)controlTypeChanged:(id)sender {
-    if ([controlType isOn]) {
+    if ([_currentCtrlType isEqualToString:@"gyroscopic"]) {
         
-        [btnForward setEnabled:NO];
-        [btnForward setHidden:YES];
-        [btnReverse setEnabled:NO];
-        [btnReverse setHidden:YES];
-        [btnLeft setEnabled:NO];
-        [btnLeft setHidden:YES];
-        [btnRight setEnabled:NO];
-        [btnRight setHidden:YES];
+        [self.btnForward setEnabled:NO];
+        [self.btnForward setHidden:YES];
+        [self.btnReverse setEnabled:NO];
+        [self.btnReverse setHidden:YES];
+        [self.btnLeft setEnabled:NO];
+        [self.btnLeft setHidden:YES];
+        [self.btnRight setEnabled:NO];
+        [self.btnRight setHidden:YES];
         
         // Start to listen for gyro updates.
         NSOperationQueue *theQueue = [[NSOperationQueue alloc] init];
@@ -169,15 +163,27 @@
         _previousMove = @"";
         [self sendCommand:@"stop"];
         [_motionManager stopGyroUpdates];
-        [btnForward setEnabled:YES];
-        [btnForward setHidden:NO];
-        [btnReverse setEnabled:YES];
-        [btnReverse setHidden:NO];
-        [btnLeft setEnabled:YES];
-        [btnLeft setHidden:NO];
-        [btnRight setEnabled:YES];
-        [btnRight setHidden:NO];
+        [self.btnForward setEnabled:YES];
+        [self.btnForward setHidden:NO];
+        [self.btnReverse setEnabled:YES];
+        [self.btnReverse setHidden:NO];
+        [self.btnLeft setEnabled:YES];
+        [self.btnLeft setHidden:NO];
+        [self.btnRight setEnabled:YES];
+        [self.btnRight setHidden:NO];
     }
+}
+
+- (IBAction)openSettings:(id)sender {
+    // Disconnect
+    [self doDisconnect:nil];
+    
+    // Open settings view
+    SettingsViewController *settingsController = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController" bundle:nil];
+    UINavigationController *controller = [[UINavigationController alloc] initWithRootViewController:settingsController];
+    [controller.navigationBar setHidden:YES];
+    
+    [self presentViewController:controller animated:YES completion:nil];
 }
 
 #pragma mark - Misc
@@ -193,14 +199,14 @@
         // Connect to MovingRaspi server
         
         while (([_outputStream streamStatus] != NSStreamStatusOpen && [_outputStream streamStatus] != NSStreamStatusError) && _connectInProgress) {
-            [status performSelectorOnMainThread:@selector(setText:) withObject:@"Connection in progress…" waitUntilDone:YES];
+            [self.status performSelectorOnMainThread:@selector(setText:) withObject:@"Connection in progress…" waitUntilDone:YES];
         }
         if ([_outputStream streamStatus] == NSStreamStatusOpen) {
-            [status performSelectorOnMainThread:@selector(setText:) withObject:[NSString stringWithFormat:@"Connected to %@:%@", [self.host text], [self.port text]] waitUntilDone:YES];
+            [self.status performSelectorOnMainThread:@selector(setText:) withObject:[NSString stringWithFormat:@"Connected to %@:%@", _currentHost, _currentPort] waitUntilDone:YES];
         } else if ([_outputStream streamStatus] == NSStreamStatusError) {
-            [status performSelectorOnMainThread:@selector(setText:) withObject:@"Could not connect to MovingRaspi" waitUntilDone:YES];
+            [self.status performSelectorOnMainThread:@selector(setText:) withObject:@"Could not connect to MovingRaspi" waitUntilDone:YES];
         } else {
-            [status performSelectorOnMainThread:@selector(setText:) withObject:@"Not connected to MovingRaspi" waitUntilDone:YES];
+            [self.status performSelectorOnMainThread:@selector(setText:) withObject:@"Not connected to MovingRaspi" waitUntilDone:YES];
         }
     }
 }
@@ -213,7 +219,7 @@
             
             CFReadStreamRef readStream;
             CFWriteStreamRef writeStream;
-            CFStreamCreatePairWithSocketToHost(NULL, (CFStringRef)CFBridgingRetain([self.host text]), [[self.pcvPort text] intValue], &readStream, &writeStream);
+            CFStreamCreatePairWithSocketToHost(NULL, (CFStringRef)CFBridgingRetain(_currentHost), [_currentPcvPort intValue], &readStream, &writeStream);
             _inputStream = (NSInputStream *)CFBridgingRelease(readStream);
         
             [_inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
@@ -247,14 +253,14 @@
         float progress = (([[values objectAtIndex:2] floatValue]-[[values objectAtIndex:0] floatValue])-([[values objectAtIndex:2] floatValue]-[[values objectAtIndex:1] floatValue]))/([[values objectAtIndex:2] floatValue]-[[values objectAtIndex:0] floatValue]);
         
         if (progress < 0.1) {
-            [batteryLevel setProgressTintColor:[UIColor redColor]];
+            [self.batteryLevel setProgressTintColor:[UIColor redColor]];
         } else if (progress < 0.25) {
-            [batteryLevel setProgressTintColor:[UIColor orangeColor]];
+            [self.batteryLevel setProgressTintColor:[UIColor orangeColor]];
         } else {
-            [batteryLevel setProgressTintColor:[UIColor greenColor]];
+            [self.batteryLevel setProgressTintColor:[UIColor greenColor]];
         }
         
-        [batteryLevel setProgress:progress animated:YES];
+        [self.batteryLevel setProgress:progress animated:YES];
     }
 }
 
@@ -262,12 +268,18 @@
 - (void)initNetworkCommunication {
     CFReadStreamRef readStream;
     CFWriteStreamRef writeStream;
-    CFStreamCreatePairWithSocketToHost(NULL, (CFStringRef)CFBridgingRetain([self.host text]), [[self.port text] intValue], &readStream, &writeStream);
+    CFStreamCreatePairWithSocketToHost(NULL, (CFStringRef)CFBridgingRetain(_currentHost), [_currentPort intValue], &readStream, &writeStream);
     _outputStream = (NSOutputStream *)CFBridgingRelease(writeStream);
     
     [_outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
     
     [_outputStream open];
+}
+
+- (void)startVideoStream {
+    NSURL *url = [NSURL URLWithString:_currentMjpegUrl];
+    self.streamView.url = url;
+    [self.streamView play];
 }
 
 @end

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreMotion/CoreMotion.h>
+#import "MotionJpegImageView.h"
 
 @interface ViewController : UIViewController {
     BOOL _connectInProgress;
@@ -20,11 +21,14 @@
 
     NSString *_previousMove;
     
+    NSString *_currentHost;
+    NSString *_currentPort;
+    NSString *_currentPcvPort;
+    NSString *_currentMjpegUrl;
+    NSString *_currentCtrlType;
+    
 }
 
-@property(nonatomic, strong) IBOutlet UITextField *host;
-@property(nonatomic, strong) IBOutlet UITextField *port;
-@property(nonatomic, strong) IBOutlet UITextField *pcvPort;
 @property(nonatomic, strong) IBOutlet UIButton *connect;
 @property(nonatomic, strong) IBOutlet UIButton *disconnect;
 @property(nonatomic, strong) IBOutlet UILabel *status;
@@ -35,9 +39,11 @@
 @property(nonatomic, strong) IBOutlet UIButton *btnRight;
 @property(nonatomic, strong) IBOutlet UIButton *btnStop;
 
-@property(nonatomic, strong) IBOutlet UISwitch *controlType;
+@property(nonatomic, strong) IBOutlet UIButton *btnSettings;
 
 @property(nonatomic, strong) IBOutlet UIProgressView *batteryLevel;
+
+@property(nonatomic, strong) IBOutlet MotionJpegImageView *streamView;
 
 - (IBAction)doConnect:(id)sender;
 - (IBAction)doDisconnect:(id)sender;
@@ -50,5 +56,7 @@
 - (IBAction)stop:(id)sender;
 
 - (IBAction)controlTypeChanged:(id)sender;
+
+- (IBAction)openSettings:(id)sender;
 
 @end

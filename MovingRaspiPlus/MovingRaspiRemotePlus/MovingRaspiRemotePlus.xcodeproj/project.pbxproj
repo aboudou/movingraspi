@@ -23,6 +23,10 @@
 		3B819F07166D4E7A00B02BB9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B819F06166D4E7A00B02BB9 /* ViewController.m */; };
 		3B819F0A166D4E7A00B02BB9 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B819F08166D4E7A00B02BB9 /* ViewController.xib */; };
 		3B9C421016C1486300941F0A /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B9C420E16C1484900941F0A /* CoreMotion.framework */; };
+		3BB701C0186C0FDF001DAA65 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BB701BF186C0FDF001DAA65 /* SettingsViewController.m */; };
+		3BB701C2186C1022001DAA65 /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3BB701C1186C1022001DAA65 /* SettingsViewController.xib */; };
+		3BB7021C186C2467001DAA65 /* MotionJpegImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BB70214186C2467001DAA65 /* MotionJpegImageView.m */; };
+		3BB70220186C3788001DAA65 /* video@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BB7021F186C3788001DAA65 /* video@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +51,12 @@
 		3B819F06166D4E7A00B02BB9 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		3B819F09166D4E7A00B02BB9 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
 		3B9C420E16C1484900941F0A /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		3BB701BE186C0FDF001DAA65 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		3BB701BF186C0FDF001DAA65 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		3BB701C1186C1022001DAA65 /* SettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
+		3BB70213186C2467001DAA65 /* MotionJpegImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MotionJpegImageView.h; sourceTree = "<group>"; };
+		3BB70214186C2467001DAA65 /* MotionJpegImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MotionJpegImageView.m; sourceTree = "<group>"; };
+		3BB7021F186C3788001DAA65 /* video@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,12 +105,17 @@
 		3B819EF3166D4E7A00B02BB9 /* MovingRaspiRemote */ = {
 			isa = PBXGroup;
 			children = (
+				3BB7021E186C3754001DAA65 /* Images */,
 				3B819EFC166D4E7A00B02BB9 /* AppDelegate.h */,
 				3B819EFD166D4E7A00B02BB9 /* AppDelegate.m */,
+				3BB701BE186C0FDF001DAA65 /* SettingsViewController.h */,
+				3BB701BF186C0FDF001DAA65 /* SettingsViewController.m */,
+				3BB701C1186C1022001DAA65 /* SettingsViewController.xib */,
 				3B819F05166D4E7A00B02BB9 /* ViewController.h */,
 				3B819F06166D4E7A00B02BB9 /* ViewController.m */,
 				3B819F08166D4E7A00B02BB9 /* ViewController.xib */,
 				3B819EF4166D4E7A00B02BB9 /* Supporting Files */,
+				3BB70207186C2467001DAA65 /* External */,
 			);
 			path = MovingRaspiRemote;
 			sourceTree = "<group>";
@@ -121,6 +136,31 @@
 				3B72E2D916B1775400EE92D0 /* Icon@2x.png */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		3BB70207186C2467001DAA65 /* External */ = {
+			isa = PBXGroup;
+			children = (
+				3BB70208186C2467001DAA65 /* MotionJpegImageView */,
+			);
+			path = External;
+			sourceTree = SOURCE_ROOT;
+		};
+		3BB70208186C2467001DAA65 /* MotionJpegImageView */ = {
+			isa = PBXGroup;
+			children = (
+				3BB70213186C2467001DAA65 /* MotionJpegImageView.h */,
+				3BB70214186C2467001DAA65 /* MotionJpegImageView.m */,
+			);
+			path = MotionJpegImageView;
+			sourceTree = "<group>";
+		};
+		3BB7021E186C3754001DAA65 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				3BB7021F186C3788001DAA65 /* video@2x.png */,
+			);
+			name = Images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -175,6 +215,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B819EF8166D4E7A00B02BB9 /* InfoPlist.strings in Resources */,
+				3BB70220186C3788001DAA65 /* video@2x.png in Resources */,
 				3B819F00166D4E7A00B02BB9 /* Default.png in Resources */,
 				3B819F02166D4E7A00B02BB9 /* Default@2x.png in Resources */,
 				3B819F04166D4E7A00B02BB9 /* Default-568h@2x.png in Resources */,
@@ -183,6 +224,7 @@
 				3B72E2DB16B1775400EE92D0 /* Icon-72@2x.png in Resources */,
 				3B72E2DC16B1775400EE92D0 /* Icon.png in Resources */,
 				3B72E2DD16B1775400EE92D0 /* Icon@2x.png in Resources */,
+				3BB701C2186C1022001DAA65 /* SettingsViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -193,9 +235,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3BB7021C186C2467001DAA65 /* MotionJpegImageView.m in Sources */,
 				3B819EFA166D4E7A00B02BB9 /* main.m in Sources */,
 				3B819EFE166D4E7A00B02BB9 /* AppDelegate.m in Sources */,
 				3B819F07166D4E7A00B02BB9 /* ViewController.m in Sources */,
+				3BB701C0186C0FDF001DAA65 /* SettingsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -283,7 +327,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MovingRaspiRemote/MovingRaspiRemotePlus-Prefix.pch";
 				INFOPLIST_FILE = "MovingRaspiRemote/MovingRaspiRemotePlus-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = MovingRaspiRemotePlus;
 				PROVISIONING_PROFILE = "B5105AD5-D090-44E7-BC5A-E9AD5276948D";
 				WRAPPER_EXTENSION = app;
@@ -297,7 +341,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MovingRaspiRemote/MovingRaspiRemotePlus-Prefix.pch";
 				INFOPLIST_FILE = "MovingRaspiRemote/MovingRaspiRemotePlus-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = MovingRaspiRemotePlus;
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
